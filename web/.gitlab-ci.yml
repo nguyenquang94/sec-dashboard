@@ -1,0 +1,89 @@
+image: node:16-bullseye-slim
+
+variables:
+  WORK_DIR: .
+  NODE_ENV: development
+  DOCKER_DRIVER: overlay2
+  DOCKER_FILE: docker/Dockerfile
+  DOCKER_BUILD_CONTEXT: .
+  DOCKER_COMPOSE_FILE: docker/docker-stack.yml
+  DOCKER_IMAGE: ${CI_PROJECT_PATH_SLUG}:${CI_PIPELINE_ID}-${CI_COMMIT_SHORT_SHA}
+  DOCKER_STACK_NAME: ${CI_PROJECT_PATH_SLUG}
+
+stages:
+  - preparation
+  - deploy
+
+Bundle:
+  stage: preparation
+  only:
+    - deploy
+  cache:
+    key: node_modules
+    paths:
+      - ${WORK_DIR}/node_modules
+  script:
+    - yarn cache clean && yarn install --pure-lockfile --cache-folder .yarn
+    - yarn build ${YARN_BUILD_ARGS}
+  tags:
+    - wylde-admin
+  artifacts:
+    name: 'artifacts'
+    expire_in: 1h
+    paths:
+      - ${WORK_DIR}/dist
+      - ${WORK_DIR}/build
+  variables:
+    CI: 'false'
+    SKIP_PREFLIGHT_CHECK: 'true'
+    NODE_OPTIONS: 4096
+
+Deploy:
+  stage: deploy
+  image: docker:latest
+  only:
+    - deploy
+  tags:
+    - wylde-admin
+  before_script:
+    # move to work dir
+    - cd ${WORK_DIR}
+    # validate config
+    - |
+      if [ ! -f ${DOCKER_FILE} ] || [ ! -f ${DOCKER_COMPOSE_FILE} ]; then
+        echo "ERROR! ${DOCKER_FILE} or ${DOCKER_COMPOSE_FILE} does not exist."
+        exit 1
+      fi
+    - |
+      if [ ! -z ${DOCKER_REGISTRY_URL} ]; then
+        echo "DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}"
+        if [ -z ${DOCKER_REGISTRY_USERNAME} ] || [ -z ${DOCKER_REGISTRY_PASSWORD} ]; then
+          echo "ERROR! DOCKER_REGISTRY_USERNAME and DOCKER_REGISTRY_PASSWORD must be setted when DOCKER_REGISTRY_URL is setted."
+          exit 1
+        fi
+      fi
+
+    # login docker registry
+    - |
+      if [ ! -z "${DOCKER_REGISTRY_URL}" ]
+      then
+        echo ${DOCKER_REGISTRY_PASSWORD} | docker login \
+          --username ${DOCKER_REGISTRY_USERNAME} \
+          --password-stdin \
+          ${DOCKER_REGISTRY_URL}
+        export DOCKER_IMAGE=${DOCKER_REGISTRY_URL}/$DOCKER_IMAGE
+      fi
+
+  script:
+    # build docker
+    - docker build -f ${DOCKER_FILE} -t ${DOCKER_IMAGE} ${DOCKER_BUILD_CONTEXT}
+    # push docker
+    - if [ ! -z "${DOCKER_REGISTRY_URL}" ]; then docker push ${DOCKER_IMAGE}; fi
+    # deploy
+    - |
+      if [ -z "${DOCKER_HOST_DEPLOY}" ]
+      then
+        docker stack deploy --compose-file ${DOCKER_COMPOSE_FILE} ${DOCKER_STACK_NAME}
+      else
+        docker -H ${DOCKER_HOST_DEPLOY} stack deploy --compose-file ${DOCKER_COMPOSE_FILE} ${DOCKER_STACK_NAME} --with-registry-auth
+      fi

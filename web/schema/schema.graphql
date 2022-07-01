@@ -1,0 +1,40 @@
+type ChartEntity implements Node {
+  id: ID!
+  orange: Float!
+  blue: Float!
+  gray: Float!
+  black: Float!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum KeyTypeEnum {
+  ORANGE
+  BLUE
+  GRAY
+  BLACK
+}
+
+type Mutation {
+  """Get current chart data"""
+  updateChart(input: UpdateValueInput!): ChartEntity!
+}
+
+"""Node"""
+interface Node {
+  id: ID!
+}
+
+type Query {
+  """Get current chart data"""
+  chart: ChartEntity!
+}
+
+type Subscription {
+  updateDataChart: ChartEntity!
+}
+
+input UpdateValueInput {
+  type: KeyTypeEnum!
+  value: Float!
+}

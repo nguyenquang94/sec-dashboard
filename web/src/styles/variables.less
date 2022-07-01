@@ -1,0 +1,40 @@
+@import '~antd/lib/style/themes/default.less';
+@text-color: rgba(0, 0, 0, 0.65);
+@borderColor: #d9d9d9;
+@error-color: #f5222d;
+@primary-color: #004684;
+
+.formGlobalStyle() {
+  .ant-form-item-label {
+    text-align: left;
+    label.ant-form-item-required {
+      &::after {
+        display: inline-block;
+        color: @primary-color;
+        font-weight: bold;
+        content: '*';
+      }
+      &::before {
+        display: none;
+      }
+    }
+    label::after {
+      content: none;
+    }
+  }
+
+  .ant-btn:not([type='submit']):not(.original) {
+    border-radius: 4px;
+    color: @primary-color;
+    border-color: @primary-color;
+  }
+  .ant-btn:disabled {
+    color: rgba(0, 0, 0, 0.25);
+    border-color: #d9d9d9;
+  }
+
+  input {
+    //height: 49px;
+    //text-indent: 8px;
+  }
+}

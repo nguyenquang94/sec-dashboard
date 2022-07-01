@@ -1,0 +1,41 @@
+overwrite: true
+schema:
+  - schema/schema.graphql
+documents:
+  - src/graphql/mutations/**/*.ts
+  - src/**/*.graphql.ts
+  - src/**/*.gql.ts
+  - src/graphql/queries/**/*.ts
+  - src/graphql/fragments/**/*.ts
+
+generates:
+  src/graphql/type.interface.ts:
+    hooks:
+      afterOneFileWrite:
+        - prettier --write
+        - eslint --fix
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      preResolveTypes: true
+      immutableTypes: false
+      nonOptionalTypename: false
+      avoidOptionals: false
+      dedupeOperationSuffix: true
+      flattenGeneratedTypes: false
+      exportFragmentSpreadSubTypes: true
+      operationResultSuffix: 'Response'
+      scalars:
+        Upload: any
+      declarationKind:
+        type: 'interface'
+        input: 'interface'
+
+config:
+  namingConvention: keep
+
+hooks:
+  afterOneFileWrite:
+    - prettier --write
+    - eslint --fix

@@ -1,0 +1,1689 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PageInfo {
+  startCursor: String
+  endCursor: String
+  hasPrevPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type PaginationMeta {
+  itemCount: Int!
+  totalItems: Int!
+  itemsPerPage: Int!
+  totalPages: Int!
+  currentPage: Int!
+  next: String
+  previous: String
+}
+
+type PaginationLinks {
+  first: String
+  previous: String
+  next: String
+  last: String
+}
+
+type State implements Node {
+  id: ID!
+  name: String!
+  cityId: String!
+}
+
+"""Node"""
+interface Node {
+  id: ID!
+}
+
+type City implements Node {
+  id: ID!
+  name: String!
+}
+
+type AdminUser implements Node {
+  id: ID!
+  firstName: String
+  username: String!
+  lastName: String
+  isActive: Boolean!
+  fullName: String
+}
+
+type StaticCommonEntity implements Node {
+  id: ID!
+  isRequired: Boolean
+  title: String!
+  content: String!
+  rawContent: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  editedBy: AdminUser
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User implements Node {
+  id: ID!
+  userId: String!
+  username: String
+  name: String!
+  email: String!
+  phone: String!
+  avatar: String
+  info: String
+  dob: String!
+  gender: Gender!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  updatedAddressAt: String
+  stateId: String!
+  cityId: String!
+  address: String!
+  addressDetail: String
+  level: Level!
+  isPublish: Boolean!
+  udonLeaf: Float!
+  metadata: UserMetadata
+
+  """Introduction: Basic information"""
+  introductionBasic: IntroductionBasic
+
+  """Introduction: Notice information (last 4 records)"""
+  introductionNotice: [IntroductionNotice!]
+
+  """Introduction: QnA information (last 4 records)"""
+  introductionQnA: [IntroductionQnA!]
+
+  """total like of store"""
+  likeCount: Float
+
+  """total product of store"""
+  productCount: Float
+
+  """total product of store"""
+  productCountStore: Float
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Level {
+  WARD
+  CITY
+  COUNTRY
+}
+
+type UserMetadata implements Node {
+  id: ID!
+  quickbloxId: Int
+  twitterUrl: String
+  facebookUrl: String
+  naverUrl: String
+  kakaoUrl: String
+  instagramUrl: String
+  quickbloxPassword: String
+  userId: String!
+  terms: [String!]
+  totalLike: Float!
+  totalDone: Float!
+  totalStop: Float!
+  totalForSale: Float!
+}
+
+type ProductEntity implements Node {
+  id: ID!
+  storeId: String!
+  productName: String!
+  productDescription: String!
+  category: ProductCategory!
+  subCategory: ProductSubCategory!
+  mediaType: MediaType!
+  price: Float!
+  status: Status!
+  changeArea: Level!
+  isExpand: Boolean!
+  isPushToTop: Boolean!
+  pushToTopAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isActive: Boolean!
+  isDelete: Boolean!
+  deletedAt: DateTime
+  albumGallery: [ProductMediaDetail!]
+  store: User
+  likeCount: Float
+  bookMarkCount: Float
+  commentCount: Float
+  reportCount: Float
+  paymentCondition: [PaymentCondition!]
+  sellingMethod: TransactionMethod
+  shipFee: Float
+  negotiate: Boolean
+}
+
+enum ProductCategory {
+  SELLING
+  TALENT
+  SHARING
+  TOGETHER
+}
+
+enum ProductSubCategory {
+  CLOTHES
+  ACCESSORIES
+  BEAUTY
+  PREGNANCY
+  BABYCARE
+  ANIMAL
+  ELECTRIC
+  FOOD
+  INTERIO
+  EQUIPMENT
+  CULTURE
+  CATERING
+  PRODUCE
+  EDUCATION
+  HEALTHCARE
+  SPORT
+  TRANSPORT
+  CLEANING
+  CONSTRUCTION
+  REPAIR
+  FINANCE
+  EVENT
+  WEARING
+  SLEEPING
+  DRIVING
+  USING
+  BUY
+  GO
+  VIEW
+  DO
+  OTHERS
+}
+
+enum MediaType {
+  ONEFORALL
+  ONEBYONE
+}
+
+enum Status {
+  FORSALE
+  DONESELLING
+  STOPSELLING
+}
+
+enum PaymentCondition {
+  ALL
+  SAFE
+  CASH_ALL
+  CASH_PREPAID
+  CASH_DIRECT
+  CARD_ALL
+  CARD_PREPAID
+  CARD_DIRECT
+}
+
+enum TransactionMethod {
+  ALL
+  SHIPPING_AGENCY
+  PICKUP_AT_STORE
+}
+
+type ChangeStatusProduct {
+  success: Boolean!
+  status: Status!
+}
+
+type DeleteProduct {
+  isDeleted: Boolean!
+}
+
+type ProductMediaDetail implements Node {
+  id: ID!
+  mediaId: String!
+  productId: String!
+  caption: String!
+  description: String!
+  productCategory: ProductCategory!
+  imageName: String!
+  filePath: String!
+  isDefault: Boolean!
+}
+
+type ProductSellingEntity implements Node {
+  id: ID!
+  productId: String!
+  category: ProductCategory!
+  shipFee: Float!
+  freeShip: Boolean!
+  productStatus: ProductStatus!
+  sellingMethod: TransactionMethod!
+  paymentCondition: [PaymentCondition!]!
+  refundCondition: String!
+  negotiate: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  albumGallery: [ProductMediaDetail!]
+  subCategory: ProductSubCategory
+  status: Status
+  price: Float
+  storeId: String
+  store: User
+  mediaType: MediaType
+  isActive: Boolean
+  likeCount: Float
+  bookMarkCount: Float
+  commentCount: Float
+  comments: [CommentEntity!]
+  reportCount: Float
+  paymentConditionInline: PaymentConditionDisplayInline
+  paymentConditionTag: [PaymentConditionDisplayTag!]
+  productName: String
+  productDescription: String
+}
+
+enum ProductStatus {
+  NEW
+  LIKE_NEW
+  USED
+}
+
+enum PaymentConditionDisplayInline {
+  ALL
+  SAFE
+  CASH_ALL
+  CASH_PREPAID
+  CASH_DIRECT
+  CARD_ALL
+  CARD_PREPAID
+  CARD_DIRECT
+  ANY_CASH_AND_CARD
+  SAFE_AND_ANY_CASH
+  SAFE_AND_ANY_CARD
+}
+
+enum PaymentConditionDisplayTag {
+  ALL
+  SAFE
+  CASH_ALL
+  CASH_PREPAID
+  CASH_DIRECT
+  CARD_ALL
+  CARD_PREPAID
+  CARD_DIRECT
+}
+
+type Media implements Node {
+  id: ID!
+  fileSize: Int
+  name: String!
+  filePath: String
+  mimeType: String
+  isDeleted: Boolean!
+  ownerId: String
+  type: FileType!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  capabilities: MediaCapability
+}
+
+enum FileType {
+  FILE
+  DIR
+}
+
+type MediaEdge implements Edge {
+  cursor: String!
+  node: Media!
+}
+
+interface Edge {
+  cursor: String
+}
+
+type MediaConnection implements CursorConnection {
+  totalCount: Int!
+  pageInfo: PageInfo!
+  edges: [MediaEdge!]
+}
+
+interface CursorConnection {
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
+type ProductSharingEntity implements Node {
+  id: ID!
+  productId: String!
+  category: ProductCategory!
+  availableTime: AvailableTime!
+  startTime: String!
+  endTime: String!
+  responsiblityCondition: String!
+  refundCondition: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  albumGallery: [ProductMediaDetail!]
+  subCategory: ProductSubCategory
+  status: Status
+  price: Float
+  storeId: String
+  store: User
+  isActive: Boolean
+  mediaType: MediaType
+  likeCount: Float
+  bookMarkCount: Float
+  commentCount: Float
+  comments: [CommentEntity!]
+  reportCount: Float
+  productName: String
+  productDescription: String
+}
+
+enum AvailableTime {
+  ALL
+  WEEKEND
+  WEEKDAYS
+}
+
+type ProductTalentEntity implements Node {
+  id: ID!
+  productId: String!
+  category: ProductCategory!
+  introduction: String!
+  completionCondition: String!
+  refundCondition: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDelete: Boolean!
+  deletedAt: DateTime
+  albumGallery: [ProductMediaDetail!]
+  subCategory: ProductSubCategory
+  status: Status
+  price: Float
+  storeId: String
+  store: User
+  isActive: Boolean
+  mediaType: MediaType
+  likeCount: Float
+  bookMarkCount: Float
+  commentCount: Float
+  comments: [CommentEntity!]
+  reportCount: Float
+  productName: String
+  productDescription: String
+}
+
+type ProductTogetherEntity implements Node {
+  id: ID!
+  productId: String!
+  category: ProductCategory!
+  minPeople: Float!
+  maxPeople: Float!
+  availableTime: AvailableTime!
+  startTime: String!
+  endTime: String!
+  refundCondition: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  albumGallery: [ProductMediaDetail!]
+  subCategory: ProductSubCategory
+  status: Status
+  price: Float
+  storeId: String
+  mediaType: MediaType
+  isActive: Boolean
+  store: User
+  likeCount: Float
+  bookMarkCount: Float
+  commentCount: Float
+  comments: [CommentEntity!]
+  reportCount: Float
+  productName: String
+  productDescription: String
+}
+
+"""IntroductionBasic"""
+type IntroductionBasic implements Node {
+  id: ID!
+  content: String!
+  ownerId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type DeleteIntroduction {
+  isDeleted: Boolean!
+  id: String!
+}
+
+"""IntroductionNotice"""
+type IntroductionNotice implements Node {
+  id: ID!
+  title: String!
+  content: String!
+  ownerId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""IntroductionQnA"""
+type IntroductionQnA implements Node {
+  id: ID!
+  title: String!
+  content: String!
+  ownerId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserShipping implements Node {
+  id: ID!
+  userId: String!
+  locationName: String!
+  receiverName: String!
+  address: String!
+  phone: String!
+  addressDetail: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  """City"""
+  city: City
+
+  """State"""
+  state: State
+}
+
+"""List user"""
+type UserConnection implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [User!]!
+}
+
+interface Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+}
+
+"""IntroductionNotice"""
+type IntroductionNoticeEdge {
+  node: IntroductionNotice!
+  cursor: String!
+}
+
+"""IntroductionNoticeConnection"""
+type IntroductionNoticeConnection {
+  totalCount: Int!
+  edges: [IntroductionNoticeEdge!]
+  pageInfo: PageInfo!
+}
+
+"""List introduction notice"""
+type IntroductionNoticeList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [IntroductionNotice!]!
+}
+
+"""IntroductionQnA Edge"""
+type IntroductionQnAEdge {
+  node: IntroductionQnA!
+  cursor: String!
+}
+
+"""IntroductionQnAConnection"""
+type IntroductionQnAConnection {
+  totalCount: Int!
+  edges: [IntroductionQnAEdge!]
+  pageInfo: PageInfo!
+}
+
+"""List introduction QnA"""
+type IntroductionQnAList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [IntroductionQnA!]!
+}
+
+type StaticFAQ implements Node {
+  id: ID!
+  title: String!
+  content: String!
+  rawContent: String
+  type: StaticFAQType!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  editedBy: AdminUser
+}
+
+enum StaticFAQType {
+  FAQ
+  ADV
+}
+
+type StaticNotice implements Node {
+  id: ID!
+  title: String!
+  content: String!
+  rawContent: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  editedBy: AdminUser
+}
+
+"""StaticFAQ"""
+type StaticFAQEdge {
+  node: StaticFAQ!
+  cursor: String!
+}
+
+"""StaticFAQConnection"""
+type StaticFAQConnection {
+  totalCount: Int!
+  edges: [StaticFAQEdge!]
+  pageInfo: PageInfo!
+}
+
+"""List static FAQ"""
+type StaticFAQList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [StaticFAQ!]!
+}
+
+"""Delete Static"""
+type DeleteStatic {
+  isDeleted: Boolean!
+  id: String!
+}
+
+"""StaticNotice"""
+type StaticNoticeEdge {
+  node: StaticNotice!
+  cursor: String!
+}
+
+"""StaticNoticeConnection"""
+type StaticNoticeConnection {
+  totalCount: Int!
+  edges: [StaticNoticeEdge!]
+  pageInfo: PageInfo!
+}
+
+"""List static notice"""
+type StaticNoticeList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [StaticNotice!]!
+}
+
+type UserBank implements Node {
+  id: ID!
+  userId: String!
+  accountName: String!
+  bankName: String!
+  accountNumber: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""List user shipping"""
+type UserShippingList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [UserShipping!]!
+}
+
+"""List user bank"""
+type UserBankList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [UserBank!]!
+}
+
+"""ZipCodeConnection"""
+type ZipCodeConnection {
+  zipNo: ZipCodeDetailConnection!
+  address: ZipCodeDetailConnection!
+  rangeKind: ZipCodeDetailConnection!
+}
+
+"""ZipCodeDetailConnection"""
+type ZipCodeDetailConnection {
+  _text: String
+}
+
+type CommentEntity implements Node {
+  id: ID!
+  writerId: String!
+  productId: String!
+  content: String!
+  parentId: String
+  isActive: Boolean!
+  isDelete: Boolean!
+  deletedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  store: User
+  product: ProductEntity
+  reportCount: Float
+  likeCount: Float
+  replyCount: Float
+}
+
+"""List Product Selling"""
+type ProductSellingList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [ProductSellingEntity!]!
+}
+
+"""List Product Sharing"""
+type ProductSharingList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [ProductSharingEntity!]!
+}
+
+"""ProductTalent"""
+type ProductTalentEdge {
+  node: ProductTalentEntity!
+  cursor: String!
+}
+
+"""List Product Talent"""
+type ProductTalentList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [ProductTalentEntity!]!
+}
+
+"""List Product Together"""
+type ProductTogetherList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [ProductTogetherEntity!]!
+}
+
+"""List product"""
+type ProductConnection implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [ProductEntity!]!
+}
+
+"""Count List product"""
+type ProductCountConnection {
+  category: ProductCategory!
+  count: Float!
+  storeId: String!
+  child: [ProductStatusConnection!]
+}
+
+"""Count Status of product category"""
+type ProductStatusConnection {
+  status: Status!
+  count: Float!
+}
+
+"""List Product Media"""
+type CommentList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [CommentEntity!]!
+}
+
+type UserSearchEntity implements Node {
+  id: ID!
+  userId: String
+  keyword: String!
+  searchType: UserSearchKeyword!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDelete: Boolean!
+  deletedAt: DateTime
+}
+
+enum UserSearchKeyword {
+  PRODUCT
+  STORE
+}
+
+"""List search keywords of user"""
+type UserSearchKeywordList implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [UserSearchEntity!]!
+}
+
+"""AuthConnection"""
+type AuthConnection {
+  accessToken: String!
+  refreshToken: String!
+  expireTokenDate: DateTime!
+  expireRefreshTokenDate: DateTime!
+  user: User!
+}
+
+"""AdminAuthConnection"""
+type AdminAuthConnection {
+  accessToken: String!
+  refreshToken: String!
+  expireTokenDate: DateTime!
+  expireRefreshTokenDate: DateTime!
+  user: AdminUser!
+}
+
+type Blog implements Node {
+  id: ID!
+  views: Int!
+  title: String!
+  content: String!
+  isPublished: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  categories: [Category!]!
+}
+
+"""Category"""
+type Category implements Node {
+  id: ID!
+  title: String!
+  isPublished: Boolean!
+  ownerId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  owner: User
+}
+
+"""CategoryEdge"""
+type CategoryEdge {
+  node: Category!
+  cursor: String!
+}
+
+"""CategoryConnection"""
+type CategoryConnection {
+  totalCount: Int!
+  edges: [CategoryEdge!]
+  pageInfo: PageInfo!
+}
+
+"""Blog list"""
+type BlogConnection implements Connection {
+  meta: PaginationMeta!
+  links: PaginationLinks!
+  items: [Blog!]!
+}
+
+type MediaCapability {
+  canCopy: Boolean
+  canDelete: Boolean
+  canDownload: Boolean
+  canEdit: Boolean
+  canRename: Boolean
+}
+
+"""PrepareResponse"""
+type PrepareResponse {
+  tid: String!
+  next_redirect_app_url: String!
+  next_redirect_mobile_url: String!
+  next_redirect_pc_url: String!
+  android_app_scheme: String!
+  ios_app_scheme: String!
+  created_at: String!
+}
+
+"""Kakao Amount"""
+type KakaoAmount {
+  total: Float!
+  tax_free: Float!
+  vat: Float!
+  point: Float!
+  discount: Float!
+}
+
+"""Kakao CardInfo"""
+type KakaoCardInfo {
+  purchase_corp: String!
+  purchase_corp_code: String!
+  issuer_corp: String!
+  issuer_corp_code: String!
+  kakaopay_purchase_corp: String!
+  kakaopay_purchase_corp_code: String!
+  kakaopay_issuer_corp: String!
+  kakaopay_issuer_corp_code: String!
+  bin: String!
+  card_type: String!
+  install_month: String!
+  approved_id: String!
+  card_mid: String!
+  interest_free_install: String!
+  card_item_code: String!
+}
+
+"""Kakao ApproveResponse"""
+type ApproveResponse {
+  aid: String!
+  tid: String!
+  cid: String!
+  sid: String!
+  partner_order_id: String!
+  partner_user_id: String!
+  payment_method_type: String!
+  amount: KakaoAmount!
+  card_info: KakaoCardInfo!
+  item_name: String!
+  item_code: String!
+  quantity: Float!
+  created_at: String!
+  approved_at: String!
+  payload: String!
+}
+
+type Query {
+  users(input: UsersInput!): UserConnection
+  downloadUserList(input: UsersInput!): String
+
+  """Get user info with id"""
+  user(input: UserInput!): User
+
+  """Get store info with id"""
+  storeInfo(input: StoreInput!): User
+  searchStores(input: SearchStoreInput!): UserConnection
+
+  """detail introduction basic"""
+  IntroductionBasic(id: String!): IntroductionBasic
+
+  """list Introduction notice for app"""
+  introductionNotices(take: Int = 15, startCursor: String, nextCursor: String, ownerId: String, storeId: String): IntroductionNoticeConnection
+
+  """list Introduction notice for web"""
+  listIntroductionNotice(input: IntroductionInput!): IntroductionNoticeList
+
+  """detail introduction notice"""
+  introductionNotice(id: String!): IntroductionNotice
+
+  """list Introduction QnA for app"""
+  introductionQnAs(take: Int = 15, startCursor: String, nextCursor: String, ownerId: String, storeId: String): IntroductionQnAConnection
+
+  """list Introduction QnA for web"""
+  listIntroductionQnA(input: IntroductionInput!): IntroductionQnAList
+
+  """detail introduction QnA"""
+  introductionQnA(id: String!): IntroductionQnA
+
+  """list static notice for app"""
+  staticNotices(take: Int = 15, startCursor: String, nextCursor: String): StaticNoticeConnection
+
+  """list static notice for web"""
+  listStaticNotice(input: StaticInput!): StaticNoticeList
+
+  """detail static notice"""
+  staticNotice(id: String!): StaticNotice
+
+  """list static faq/advertisement for app"""
+  staticFAQs(take: Int = 15, startCursor: String, nextCursor: String, type: StaticFAQType!): StaticFAQConnection
+
+  """list static faq/advertisement for web"""
+  listStaticFAQ(input: StaticFAQInput!): StaticFAQList
+
+  """detail static faq/advertisement"""
+  staticFAQ(id: String!): StaticFAQ
+  terms: [StaticCommonEntity!]!
+  term(id: String!): StaticCommonEntity!
+  customerSupport: StaticCommonEntity!
+
+  """List user shipping"""
+  shippings(input: UserShippingListInput!): UserShippingList
+
+  """List user bank"""
+  getListBank(input: UserBankListInput!): UserBankList
+  cities: [City!]!
+  searchZipCode(input: SearchZipCodeInput!): [ZipCodeConnection!]!
+  states(input: GetStateInput!): [State!]!
+
+  """get list product sellings of user """
+  sellings(input: GetListProductSelling!): ProductSellingList
+  searchSellingProduct(input: SearchProductInput!): ProductSellingList
+  searchSharingProduct(input: SearchProductInput!): ProductSharingList
+  searchTalentProduct(input: SearchProductInput!): ProductTalentList
+  searchTogetherProduct(input: SearchProductInput!): ProductTogetherList
+
+  """Admin - get product detail"""
+  productDetail(input: ProductDetailInput!): ProductCommon
+
+  """Mobile- get product detail"""
+  productDetailApp(input: ProductDetailInput!): ProductCommon
+
+  """get suggestion search product"""
+  suggestionSearchProduct(input: SearchProductInput!): ProductConnection
+
+  """get list product my store or udon"""
+  listProduct(input: ProductListInput!): ProductConnection
+
+  """get list product orther user"""
+  listUserProduct(input: UserProductListInput!): ProductConnection
+
+  """get list product for admin"""
+  listProductAdmin(input: ProductListAdminInput!): ProductConnection
+
+  """count product of user by category and status"""
+  userProductCountCategory(input: ProductUserByCategoryAdminInput!): [ProductCountConnection!]
+
+  """List all comments"""
+  getCommentList(input: CommentListArgs!): CommentList
+
+  """List search keywords of user"""
+  userSearchKeywords(input: UserSearchKeywordListInput!): UserSearchKeywordList
+
+  """Get current user authentication"""
+  me: User!
+
+  """Get current admin user authentication"""
+  meAdmin: AdminUser!
+  categories(take: Int = 15, startCursor: String, nextCursor: String): CategoryConnection
+
+  """BLog Detail"""
+  blog(id: ID!): Blog
+  blogs(limit: Int = 15): BlogConnection
+  medias(take: Int = 15, parentId: String, startCursor: String, nextCursor: String): MediaConnection
+}
+
+input UsersInput {
+  skip: Float
+  take: Float
+  createFrom: String
+  createTo: String
+  keyword: String
+  level: Level
+  cityId: String
+}
+
+input UserInput {
+  userId: String!
+}
+
+input StoreInput {
+  storeId: String!
+}
+
+input SearchStoreInput {
+  skip: Float
+  take: Float
+  keyword: String
+}
+
+input IntroductionInput {
+  skip: Float
+  take: Float
+  ownerId: String
+}
+
+input StaticInput {
+  skip: Float
+  take: Float
+  search: String
+}
+
+input StaticFAQInput {
+  skip: Float
+  take: Float
+  type: StaticFAQType!
+  search: String
+}
+
+input UserShippingListInput {
+  skip: Float
+  take: Float
+}
+
+input UserBankListInput {
+  skip: Float
+  take: Float
+}
+
+input SearchZipCodeInput {
+  city: String!
+  state: String!
+  keyword: String!
+}
+
+input GetStateInput {
+  cityId: String!
+}
+
+input GetListProductSelling {
+  skip: Float
+  take: Float
+  keyword: String
+}
+
+input SearchProductInput {
+  skip: Float
+  take: Float
+  search: String
+  sort: String
+  filter: String
+  storeId: String
+  searchCriteria: SearchCriteria!
+}
+
+enum SearchCriteria {
+  MYHOME
+  UDONSTORE
+}
+
+union ProductCommon = ProductTalentEntity | ProductSharingEntity | ProductTogetherEntity | ProductSellingEntity
+
+input ProductDetailInput {
+  category: ProductCategory!
+  id: String!
+}
+
+input ProductListInput {
+  take: Float
+  skip: Float
+  type: ProductListType
+  category: ProductCategoryOptional
+  sort: ProductSortOptional
+  storeId: String
+}
+
+enum ProductListType {
+  MY_STORE
+  UDON_STORE
+}
+
+enum ProductCategoryOptional {
+  ALL
+  SELLING
+  TALENT
+  SHARING
+  TOGETHER
+}
+
+enum ProductSortOptional {
+  LASTEST
+  OLDEST
+  HIGHEST_PRICE
+  LOWEST_PRICE
+}
+
+input UserProductListInput {
+  storeId: String!
+  take: Float
+  skip: Float
+  type: ProductListType
+  category: ProductCategoryOptional
+  sort: ProductSortOptional
+}
+
+input ProductListAdminInput {
+  take: Float
+  skip: Float
+  keyword: String
+  category: ProductCategoryOptional
+  storeId: String
+  status: StatusOptional
+  createFrom: String
+  createTo: String
+}
+
+enum StatusOptional {
+  ALL
+  FORSALE
+  DONESELLING
+  STOPSELLING
+}
+
+input ProductUserByCategoryAdminInput {
+  userId: String!
+}
+
+input CommentListArgs {
+  skip: Int = 1
+  take: Int = 15
+  filter: FilterComment
+  search: String
+  sort: String
+  parentId: String
+}
+
+input FilterComment {
+  isActive: Boolean
+  createFrom: String
+  createTo: String
+  storeId: String
+  productId: String
+}
+
+input UserSearchKeywordListInput {
+  skip: Float
+  take: Float
+  searchType: UserSearchKeyword!
+}
+
+type Mutation {
+  sendOTP(input: SendOtpInput!): Boolean!
+  verifyOTP(input: VerifyOtpInput!): Boolean!
+  adminCreateUser(address: UserAddressInput!, input: NewUserInput!): User!
+  actives(input: ActivesUserInput!): Boolean!
+  adminUpdateUserInfo(address: UserAddressOptionalInput, input: AdminUpdateUserInfoInput): User!
+  createUser(term: TermInput!, otpCode: String!, address: UserAddressInput!, input: NewUserInput!): User!
+  createAdmin(input: NewAdminUserInput!): AdminUser!
+  checkUserName(input: CheckUserNameInput!): Boolean!
+  checkUserId(input: CheckUserIdInput!): Boolean!
+  logout(input: LogoutUserInput!): Boolean!
+  updateUserInfo(input: UserInfoInput!): User!
+  verifyPassword(input: UserPasswordVerifyInput!): Boolean!
+  userAppActives(input: ActivesUserAppInput!): Boolean!
+  updateProfileUser(metaData: UserMetaOptionalInput, otpCode: String, address: UserAddressOptionalInput, input: AppUpdateUserInfoInput): User!
+
+  """publish/un-publish store"""
+  publishStore(isPublish: Boolean!, id: String!): User!
+  createBasic(input: NewIntroductionBasicInput!): IntroductionBasic!
+  updateBasic(input: UpdateIntroductionBasicInput!): IntroductionBasic!
+  deleteBasic(id: String!): IntroductionBasic!
+  createNotice(input: NewIntroductionNoticeInput!): IntroductionNotice!
+  updateNotice(input: UpdateIntroductionNoticeInput!): IntroductionNotice!
+  deleteNotice(id: String!): DeleteIntroduction!
+  createQnA(input: NewIntroductionQnAInput!): IntroductionQnA!
+  updateQnA(input: UpdateIntroductionQnAInput!): IntroductionQnA!
+  deleteQnA(id: String!): DeleteIntroduction!
+
+  """create new static notice"""
+  createStaticNotice(input: NewStaticNoticeInput!): StaticNotice!
+
+  """update static notice"""
+  updateStaticNotice(input: UpdateStaticNoticeInput!): StaticNotice!
+
+  """delete static notice"""
+  deleteStaticNotice(id: String!): DeleteStatic!
+
+  """create new static faq"""
+  createStaticFAQ(input: NewStaticFAQInput!): StaticFAQ!
+
+  """update static faq"""
+  updateStaticFAQ(input: UpdateStaticFAQInput!): StaticFAQ!
+
+  """delete static faq"""
+  deleteStaticFAQ(id: String!): DeleteStatic!
+  updateCustomerSupport(input: UpdateCommonStaticInput!, id: String!): StaticCommonEntity!
+  adminUpdateTerm(input: UpdateCommonStaticInput!, id: String!): StaticCommonEntity!
+  adminForgotPassword(email: String!): Boolean!
+  adminVerifyForgot(input: AdminVerifyForgotInput!): Boolean!
+  createShipping(input: ShippingInput!): UserShipping!
+  updateShipping(input: ShippingUpdateInput!): UserShipping!
+  deleteShipping(input: ShippingDeleteInput!): Boolean!
+  createBankInfo(input: BankInput!): UserBank!
+  updateBankInfo(input: BankUpdateInput!): UserBank!
+  deleteBank(input: BankDeleteInput!): Boolean!
+  createSelling(input: NewProductSellingInput!): ProductSellingEntity!
+  updateSelling(input: UpdateProductSellingInput!): ProductSellingEntity!
+  createProductSharing(input: NewProductSharingInput!): ProductSharingEntity!
+  updateProductSharing(input: UpdateProductSharingInput!): ProductSharingEntity!
+
+  """Create Product talent"""
+  createTalent(input: NewProductTalentInput!): ProductTalentEntity!
+
+  """Update Product talent"""
+  updateTalent(input: UpdateProductTalentInput!): ProductTalentEntity!
+  createProductTogether(input: NewProductTogetherInput!): ProductTogetherEntity!
+  updateProductTogether(input: UpdateProductTogetherInput!): ProductTogetherEntity!
+
+  """Mobile - change status of product(s)"""
+  changeStatus(status: Status!, ids: [String!]!): ChangeStatusProduct!
+
+  """Mobile - delete product(s)"""
+  deleteProducts(ids: [String!]!): DeleteProduct!
+
+  """active or deactive product"""
+  activesProduct(input: ProductActiveAdminInput!): Boolean
+  createComment(input: NewCommentInput!): CommentEntity!
+  deleteComment(input: DeleteComment!): CommentEntity!
+  activeDeactiveComment(input: ActionComment!): CommentEntity!
+  createUserSearchKeyword(input: UserSearchInput!): UserSearchEntity!
+  login(input: AppLoginInput!): AuthConnection!
+  refreshToken(refreshToken: String!): AuthConnection!
+  adminLogin(password: String!, username: String!): AdminAuthConnection!
+  createCategory(input: NewCategoryInput!): Category!
+  updateCategory(input: UpdateCategoryInput!): Category!
+  createBlog(input: NewBlogInput!): Blog!
+  uploadMedia(provider: UploadProvider = LOCAL, parentId: ID, file: Upload!): Media!
+  adminUploadMedia(provider: UploadProvider = LOCAL, parentId: ID, file: Upload!): Media!
+  prepareKakao(input: PrepareInput!): PrepareResponse!
+  approveKakaoPayment(input: ApproveInput!): ApproveResponse!
+}
+
+input SendOtpInput {
+  phone: String!
+}
+
+input VerifyOtpInput {
+  phone: String!
+  code: String!
+}
+
+input UserAddressInput {
+  address: String!
+  addressDetail: String
+  cityId: String!
+  stateId: String!
+}
+
+input NewUserInput {
+  userId: String!
+  username: String
+  name: String!
+  email: String!
+  dob: String!
+  phone: String!
+  password: String!
+  confirmPassword: String!
+  gender: Gender!
+}
+
+input ActivesUserInput {
+  userId: String!
+  reason: String
+}
+
+input UserAddressOptionalInput {
+  address: String
+  addressDetail: String
+  cityId: String
+  stateId: String
+}
+
+input AdminUpdateUserInfoInput {
+  info: String
+  userId: String!
+  avatar: String
+  level: Level
+  phone: String
+  password: String
+  confirmPassword: String
+  dob: String
+  email: String
+  name: String
+  username: String
+  gender: Gender
+}
+
+input TermInput {
+  termIds: [String!]!
+}
+
+input NewAdminUserInput {
+  age: Int
+  username: String!
+  password: String
+  firstName: String
+  lastName: String
+}
+
+input CheckUserNameInput {
+  username: String!
+}
+
+input CheckUserIdInput {
+  userId: String!
+}
+
+input LogoutUserInput {
+  deviceId: String!
+}
+
+input UserInfoInput {
+  info: String
+  avatar: String
+}
+
+input UserPasswordVerifyInput {
+  password: String!
+}
+
+input ActivesUserAppInput {
+  reason: String!
+}
+
+input UserMetaOptionalInput {
+  facebookUrl: String
+  naverUrl: String
+  kakaoUrl: String
+  instagramUrl: String
+}
+
+input AppUpdateUserInfoInput {
+  username: String
+  name: String
+  phone: String
+  password: String
+  confirmPassword: String
+  dob: String
+  email: String
+  gender: Gender
+}
+
+input NewIntroductionBasicInput {
+  content: String!
+}
+
+input UpdateIntroductionBasicInput {
+  content: String!
+  id: String!
+}
+
+input NewIntroductionNoticeInput {
+  title: String!
+  content: String!
+}
+
+input UpdateIntroductionNoticeInput {
+  title: String!
+  content: String!
+  id: String!
+}
+
+input NewIntroductionQnAInput {
+  title: String!
+  content: String!
+}
+
+input UpdateIntroductionQnAInput {
+  title: String!
+  content: String!
+  id: String!
+}
+
+input NewStaticNoticeInput {
+  title: String!
+  content: String!
+  rawContent: String
+}
+
+input UpdateStaticNoticeInput {
+  title: String!
+  content: String!
+  rawContent: String
+  id: String!
+}
+
+input NewStaticFAQInput {
+  title: String!
+  content: String!
+  rawContent: String
+  type: StaticFAQType!
+}
+
+input UpdateStaticFAQInput {
+  title: String!
+  content: String!
+  rawContent: String
+  id: String!
+}
+
+input UpdateCommonStaticInput {
+  title: String
+  content: String
+  rawContent: String
+}
+
+input AdminVerifyForgotInput {
+  token: String!
+  password: String!
+  confirmPassword: String!
+}
+
+input ShippingInput {
+  locationName: String!
+  receiverName: String!
+  cityId: String!
+  stateId: String!
+  address: String!
+  phone: String!
+  addressDetail: String!
+}
+
+input ShippingUpdateInput {
+  id: String!
+  locationName: String!
+  receiverName: String!
+  cityId: String!
+  stateId: String!
+  address: String!
+  phone: String!
+  addressDetail: String!
+}
+
+input ShippingDeleteInput {
+  id: String!
+}
+
+input BankInput {
+  bankName: String!
+  accountNumber: String!
+}
+
+input BankUpdateInput {
+  id: String!
+  bankName: String!
+  accountNumber: String!
+}
+
+input BankDeleteInput {
+  id: String!
+}
+
+input NewProductSellingInput {
+  media: [ProductMediaInput!]!
+  mediaType: MediaType!
+  subCategory: ProductSubCategory!
+  price: Float!
+  shipFee: Float!
+  freeShip: Boolean!
+  productStatus: ProductStatus!
+  sellingMethod: TransactionMethod!
+  paymentCondition: [PaymentCondition!]!
+  refundCondition: String!
+  negotiate: Boolean!
+}
+
+input ProductMediaInput {
+  mediaId: String!
+  caption: String!
+  description: String!
+  isDefault: Boolean!
+}
+
+input UpdateProductSellingInput {
+  media: [ProductMediaInput!]!
+  id: String!
+  subCategory: ProductSubCategory!
+  mediaType: MediaType!
+  price: Float!
+  shipFee: Float!
+  freeShip: Boolean!
+  productStatus: ProductStatus!
+  sellingMethod: TransactionMethod!
+  paymentCondition: [PaymentCondition!]!
+  refundCondition: String!
+  negotiate: Boolean!
+}
+
+input NewProductSharingInput {
+  media: [ProductMediaInput!]!
+  mediaType: MediaType!
+  subCategory: ProductSubCategory!
+  price: Float!
+  availableTime: AvailableTime!
+  startTime: String!
+  endTime: String!
+  responsiblityCondition: String!
+  refundCondition: String!
+}
+
+input UpdateProductSharingInput {
+  media: [ProductMediaInput!]!
+  id: String!
+  mediaType: MediaType!
+  subCategory: ProductSubCategory!
+  price: Float!
+  availableTime: AvailableTime!
+  startTime: String!
+  endTime: String!
+  responsiblityCondition: String!
+  refundCondition: String!
+}
+
+input NewProductTalentInput {
+  media: [ProductMediaInput!]!
+  mediaType: MediaType!
+  subCategory: ProductSubCategory!
+  price: Float!
+  introduction: String!
+  completionCondition: String!
+  refundCondition: String!
+}
+
+input UpdateProductTalentInput {
+  media: [ProductMediaInput!]!
+  id: String!
+  mediaType: MediaType!
+  subCategory: ProductSubCategory!
+  price: Float!
+  introduction: String!
+  completionCondition: String!
+  refundCondition: String!
+}
+
+input NewProductTogetherInput {
+  media: [ProductMediaInput!]!
+  mediaType: MediaType!
+  subCategory: ProductSubCategory!
+  price: Float!
+  minPeople: Float!
+  maxPeople: Float!
+  availableTime: AvailableTime!
+  startTime: String!
+  endTime: String!
+  refundCondition: String!
+}
+
+input UpdateProductTogetherInput {
+  media: [ProductMediaInput!]!
+  id: String!
+  mediaType: MediaType!
+  subCategory: ProductSubCategory!
+  price: Float!
+  minPeople: Float!
+  maxPeople: Float!
+  availableTime: AvailableTime!
+  startTime: String!
+  endTime: String!
+  refundCondition: String!
+}
+
+input ProductActiveAdminInput {
+  productId: String!
+  reason: String
+}
+
+input NewCommentInput {
+  writerId: String
+  isActive: Boolean
+  parentId: String
+  productId: String!
+  content: String!
+}
+
+input DeleteComment {
+  commentId: String!
+}
+
+input ActionComment {
+  commentId: String!
+  action: actionCommentEnum!
+}
+
+enum actionCommentEnum {
+  ACTIVE
+  DEACTIVE
+}
+
+input UserSearchInput {
+  keyword: String!
+  searchType: UserSearchKeyword!
+}
+
+input AppLoginInput {
+  username: String!
+  password: String!
+  deviceToken: String!
+}
+
+input NewCategoryInput {
+  title: String!
+}
+
+input UpdateCategoryInput {
+  title: String
+  id: String!
+}
+
+input NewBlogInput {
+  title: String!
+  content: String!
+}
+
+"""UploadProvider"""
+enum UploadProvider {
+  LOCAL
+  S3
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input PrepareInput {
+  cid: String!
+  cid_secret: String
+  partner_order_id: String!
+  partner_user_id: String!
+  item_name: String!
+  item_code: String
+  quantity: Float!
+  total_amount: Float!
+  tax_free_amount: Float!
+  vat_amount: Float
+  approval_url: String!
+  cancel_url: String!
+  fail_url: String!
+  available_cards: [String!]
+  payment_method_type: String
+  install_month: Float
+}
+
+input ApproveInput {
+  cid: String!
+  cid_secret: String
+  tid: String!
+  partner_order_id: String!
+  partner_user_id: String!
+  pg_token: String
+  payload: String!
+  total_amount: Float!
+}

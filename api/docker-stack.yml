@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+  api:
+    image: ${DOCKER_IMAGE}
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      TZ: UTC
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_SYNC: ${DATABASE_SYNC}
+      DATABASE_PORT: 5432
+      JWT_SECRET: oto_secret
+    depends_on:
+      - postgres
+    volumes:
+      - /home/oto/public:/home/node/public
+      - /home/oto/webapp:/home/node/webapp
+      - /home/oto/uploads:/home/node/uploads
+      - /home/oto/logs:/home/node/logs
+    networks:
+      - oto_apis_network
+      - base_base_network
+
+volumes:
+  data01:
+    driver: local
+
+networks:
+  oto_apis_network:
+    driver: overlay
+    attachable: true
+  base_base_network:
+    external: true

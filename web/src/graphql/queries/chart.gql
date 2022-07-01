@@ -1,0 +1,11 @@
+query chart {
+  chart {
+    id
+    orange
+    blue
+    gray
+    black
+    createdAt
+    updatedAt
+  }
+}

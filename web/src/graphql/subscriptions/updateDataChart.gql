@@ -1,0 +1,11 @@
+subscription updateDataChart {
+  updateDataChart {
+    id
+    orange
+    blue
+    gray
+    black
+    createdAt
+    updatedAt
+  }
+}

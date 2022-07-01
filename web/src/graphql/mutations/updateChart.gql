@@ -1,0 +1,11 @@
+mutation updateChart($input: UpdateValueInput!) {
+  updateChart(input: $input) {
+    id
+    orange
+    blue
+    gray
+    black
+    createdAt
+    updatedAt
+  }
+}

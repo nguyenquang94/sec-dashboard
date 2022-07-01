@@ -1,0 +1,23 @@
+{
+  "placeholer_keyword": "Search Media",
+  "title": "Title",
+  "fileType": "File Type",
+  "all_media": "All Media",
+  "date": "등록일자",
+  "media_page": "Media Libary",
+  "user_search_placeholder": "이메일, 닉네임으로 검색",
+  "address": "주소",
+  "level": "등급",
+  "all": "전체",
+
+  "category_search_placeholder": "카테고리명으로 검색",
+  "brand_search_placeholder": "배랜드명으로 검색",
+  "brand_searh_group": "Group",
+
+  "blog_search_placeholder": "검색어 입력하세요",
+  "blog_type": "분류",
+  "blog_status": "상태",
+  "blog_sort": "정렬",
+
+  "comment_search_placeholder": "검색어나 작성자로 검색"
+}

@@ -1,0 +1,130 @@
+image: docker:latest
+
+services:
+  - docker:latest
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - node_modules/
+    - yarn.lock
+    - .yarn
+
+variables:
+  WORK_DIR: .
+  NODE_ENV: development
+  DOCKER_DRIVER: overlay2
+  DOCKER_FILE: docker/Dockerfile
+  DOCKER_BUILD_CONTEXT: .
+  DOCKER_COMPOSE_FILE: docker/docker-stack.yml
+  DOCKER_COMPOSE_FILE_PROD: docker/docker-stack.prod.yml
+  DOCKER_IMAGE: ${CI_PROJECT_PATH_SLUG}:${CI_PIPELINE_ID}-${CI_COMMIT_SHORT_SHA}
+  DOCKER_STACK_NAME: ${CI_PROJECT_PATH_SLUG}
+  DOCKER_STACK_NAME_PROD: ${CI_PROJECT_PATH_SLUG}
+
+stages:
+  - build
+
+Build For Development:
+  stage: build
+  environment:
+    name: deploy
+
+  only:
+    - deploy
+  tags:
+    - oto_apis
+  before_script:
+    # move to work dir
+    - cd ${WORK_DIR}
+    # validate config
+    - |
+      if [ ! -f ${DOCKER_FILE} ] || [ ! -f ${DOCKER_COMPOSE_FILE} ]; then
+        echo "ERROR! ${DOCKER_FILE} or ${DOCKER_COMPOSE_FILE} does not exist."
+        exit 1
+      fi
+    - |
+      if [ ! -z ${DOCKER_REGISTRY_URL} ]; then
+        echo "DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}"
+        if [ -z ${DOCKER_REGISTRY_USERNAME} ] || [ -z ${DOCKER_REGISTRY_PASSWORD} ]; then
+          echo "ERROR! DOCKER_REGISTRY_USERNAME and DOCKER_REGISTRY_PASSWORD must be setted when DOCKER_REGISTRY_URL is setted."
+          exit 1
+        fi
+      fi
+
+    # login docker registry
+    - |
+      if [ ! -z "${DOCKER_REGISTRY_URL}" ]
+      then
+        echo ${DOCKER_REGISTRY_PASSWORD} | docker login \
+          --username ${DOCKER_REGISTRY_USERNAME} \
+          --password-stdin \
+          ${DOCKER_REGISTRY_URL}
+        export DOCKER_IMAGE=${DOCKER_REGISTRY_URL}/$DOCKER_IMAGE
+      fi
+
+  script:
+    # build docker
+    - docker build -f ${DOCKER_FILE} -t ${DOCKER_IMAGE} ${DOCKER_BUILD_CONTEXT}
+    # push docker
+    - if [ ! -z "${DOCKER_REGISTRY_URL}" ]; then docker push ${DOCKER_IMAGE}; fi
+    # deploy
+    - |
+      if [ -z "${DOCKER_HOST_DEPLOY}" ]
+      then
+        docker stack deploy --compose-file ${DOCKER_COMPOSE_FILE} ${DOCKER_STACK_NAME}
+      else
+        docker -H ${DOCKER_HOST_DEPLOY} stack deploy --compose-file ${DOCKER_COMPOSE_FILE} ${DOCKER_STACK_NAME} --with-registry-auth
+      fi
+
+Build For Production:
+  stage: build
+  environment:
+    name: production
+
+  only:
+    - production
+  tags:
+    - oto_apis_prod
+  before_script:
+    # move to work dir
+    - cd ${WORK_DIR}
+    # validate config
+    - |
+      if [ ! -f ${DOCKER_FILE} ] || [ ! -f ${DOCKER_COMPOSE_FILE_PROD} ]; then
+        echo "ERROR! ${DOCKER_FILE} or ${DOCKER_COMPOSE_FILE_PROD} does not exist."
+        exit 1
+      fi
+    - |
+      if [ ! -z ${DOCKER_REGISTRY_URL} ]; then
+        echo "DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}"
+        if [ -z ${DOCKER_REGISTRY_USERNAME} ] || [ -z ${DOCKER_REGISTRY_PASSWORD} ]; then
+          echo "ERROR! DOCKER_REGISTRY_USERNAME and DOCKER_REGISTRY_PASSWORD must be setted when DOCKER_REGISTRY_URL is setted."
+          exit 1
+        fi
+      fi
+
+    # login docker registry
+    - |
+      if [ ! -z "${DOCKER_REGISTRY_URL}" ]
+      then
+        echo ${DOCKER_REGISTRY_PASSWORD} | docker login \
+          --username ${DOCKER_REGISTRY_USERNAME} \
+          --password-stdin \
+          ${DOCKER_REGISTRY_URL}
+        export DOCKER_IMAGE=${DOCKER_REGISTRY_URL}/$DOCKER_IMAGE
+      fi
+
+  script:
+    # build docker
+    - docker build -f ${DOCKER_FILE} -t ${DOCKER_IMAGE} ${DOCKER_BUILD_CONTEXT}
+    # push docker
+    - if [ ! -z "${DOCKER_REGISTRY_URL}" ]; then docker push ${DOCKER_IMAGE}; fi
+    # deploy
+    - |
+      if [ -z "${DOCKER_HOST_DEPLOY}" ]
+      then
+        docker stack deploy --compose-file ${DOCKER_COMPOSE_FILE_PROD} ${DOCKER_STACK_NAME_PROD}
+      else
+        docker -H ${DOCKER_HOST_DEPLOY} stack deploy --compose-file ${DOCKER_COMPOSE_FILE_PROD} ${DOCKER_STACK_NAME_PROD} --with-registry-auth
+      fi

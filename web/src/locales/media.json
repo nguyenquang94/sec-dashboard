@@ -1,0 +1,42 @@
+{
+  "add_file": "Add New Media",
+  "edit_file": "Edit Media",
+  "insert_file": "Insert Media",
+  "delete_file": "Delete Media",
+  "upload_files": "Upload files",
+  "general": "General",
+  "created_on": "Created on",
+  "filetitle": "File Title",
+  "filename": "File Name",
+  "filetype": "File Type",
+  "filesize": "File Size",
+  "fileurl": "File URL",
+  "placeholer_title": "Title",
+  "type": {
+    "IMAGE": "Image",
+    "VIDEO": "Video",
+    "FILE": "Documents"
+  },
+  "color": {
+    "FILE": "geekblue",
+    "VIDEO": "volcano",
+    "IMAGE": "green"
+  },
+  "message": {
+    "update_success": "Update Success",
+    "delete_confirm": "Are you sure to delete this media?",
+    "invalid_type": "The file you're attempting to upload has an extension that does not match the file format.",
+    "maxImageSize": "The uploaded file likely exceeded the maximum file size (50MB) that this server supports",
+    "maxVideoSize": "The uploaded file likely exceeded the maximum file size (5MB) that this server supports"
+  },
+  "count": "{{number}} File Selected",
+  "uploading": "Uploading...",
+  "uploaded": "Uploaded",
+  "upload": {
+    "drag": "Drag to here",
+    "or": "or",
+    "note1": "Image File Extension is png, jpeg, jpg, gif. Maximum file size is 5MB",
+    "note2": "Video File Extension is mp4. Maximum file size is 50MB",
+    "note3": "Document File Extension is pdf, doc, docx, xlsx, ppt, pptx. Maximum file size is 5MB"
+  }
+}

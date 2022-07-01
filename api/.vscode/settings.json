@@ -1,0 +1,21 @@
+{
+  "eslint.enable": true,
+  "editor.formatOnSave": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.referencesCodeLens.enabled": true,
+  "vsicons.presets.nestjs": true,
+  "vsicons.presets.angular": false,
+  "vsicons.associations.files": [
+    {
+      "icon": "tsconfig",
+      "extensions": [],
+      "filenamesGlob": ["tsconfig", "tsconfig.build"],
+      "extensionsGlob": ["json"],
+      "filename": true,
+      "format": "FileFormat.svg"
+    }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}

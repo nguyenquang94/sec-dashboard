@@ -1,0 +1,29 @@
+version: "3.3"
+services:
+ sec_api:
+    image: ${DOCKER_IMAGE}
+    restart: unless-stopped
+    ports:
+      - 3002:3002
+    environment:
+      TZ: UTC
+      PORT: 3002
+      NODE_ENV: ${NODE_ENV}
+
+    depends_on:
+      - postgres
+    volumes:
+      - /home/sec/public:/home/node/public
+      - /home/sec/webapp:/home/node/webapp
+      - /home/sec/uploads:/home/node/uploads
+      - /home/sec/logs:/home/node/logs
+    networks:
+      - sec_apis_network
+      - base_base_network
+
+networks:
+  sec_apis_network:
+    driver: overlay
+    attachable: true
+  base_base_network:
+    external: true

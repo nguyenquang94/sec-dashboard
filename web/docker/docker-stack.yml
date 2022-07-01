@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  sec-web-admin:
+    image: '${DOCKER_IMAGE}'
+    restart: unless-stopped
+    ports:
+      - 3003:80
+    environment:
+      TZ: UTC
+      EXTEND_ESLINT: 'true'
+      TSC_COMPILE_ON_ERROR: 'true'
+      SKIP_PREFLIGHT_CHECK: 'true'
+      ESLINT_NO_DEV_ERRORS: 'true' 
+      DISABLE_ESLINT_PLUGIN: 'true' 
+
+      NODE_OPTIONS: 4096
+      REACT_APP_API_URL: /graphql
+      REACT_APP_UPLOAD_URL: /api/v1/media
+
+    networks:
+      - sec_apis_network
+      - middleware_sec_apis_network
+    depends_on:
+      - sec-middleware_sec_api
+
+networks:
+  sec_apis_network:
+    driver: overlay
+    attachable: true
+  sec-middleware_sec_apis_network:
+    external: true
+

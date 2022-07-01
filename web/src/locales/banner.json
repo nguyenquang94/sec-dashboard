@@ -1,0 +1,15 @@
+{
+  "tab_mobile": "모바일앱 배너",
+  "tab_web": "웹사이트 배너",
+  "main": "Main",
+  "center": "Center",
+  "title": "제목",
+  "sub-title": "소제목",
+  "banner-image": "배너이미지",
+  "banner-url": "배너 URL",
+  "remark": "비고",
+  "modal-title": "배너상세",
+  "banner-detail": "배너상세",
+  "title-placholder": "제목을 입력하세요.",
+  "sub-placholder": "소제목을 입력하세요."
+}

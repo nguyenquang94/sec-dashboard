@@ -1,0 +1,70 @@
+version: '3'
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./data/redis:/var/lib/redis
+    restart: always
+  postgres:
+    image: postgres:11-alpine
+    restart: always
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./postgres/postgres.conf:/etc/postgresql/postgresql.conf
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_DB: ${DATABASE_NAME}
+    ports:
+      - 5432:5432
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    # ports:
+    #   - 3000:3000
+    environment:
+      TZ: UTC
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_SYNC: ${DATABASE_SYNC}
+      DATABASE_PORT: 5432
+      JWT_SECRET: oto_secret
+    depends_on:
+      - postgres
+    volumes:
+      # - ./dist:/home/node/dist
+      - ./public:/home/node/public
+      - ./webapp:/home/node/webapp
+      - ./uploads:/home/node/uploads
+      - ./logs:/home/node/logs
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      # - ./data/certbot/conf:/etc/letsencrypt
+      # - ./data/certbot/www:/var/www/certbot
+    command: [nginx-debug, '-g', 'daemon off;']
+    ports:
+      - 80:80
+      # - 443:443
+    depends_on:
+      - api
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: certonly --webroot --webroot-path=/var/www/certbot --email admin@udonleaf.com --agree-tos --no-eff-email --staging -d api.udonleaf.com  -d www.api.udonleaf.com
+
+networks:
+  bridge-docker:
+    external:
+      name: bridge-docker

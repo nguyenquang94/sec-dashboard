@@ -1,0 +1,18 @@
+{
+  "user_modal_active_title": "비활성화 사유",
+  "user_reason": "사유",
+  "user_reason_txtPlaceHolderModal": "사용자 비활성화 처리 사유를 입력해주세요",
+  "user_reason_validateInputReason": "비활성화 처리 사유를 입력해주세요.",
+  "user_reason_validateReason": "10~100자 입력해주세요.",
+  "user_reason_guide": "사용자에게 공지 이메일 발송됩니다",
+  "user_detail": "사용자 상세",
+
+  "user_create_email": "이메일",
+  "user_create_check_duplicate": "중복확인",
+  "user_create_username": "닉네임",
+  "user_create_password": "비밀번호",
+  "user_create_confirm_password": "비밀번호 확인",
+  "user_create_fullName": "이름",
+  "user_create_phone": "연락처",
+  "user_create_bank_info": "계좌정보"
+}
